@@ -10,10 +10,10 @@ class User < ApplicationRecord
             errors.add(:email, :invalid) unless email.match(EMAIL_REGEXP)
         end    
     
-    =begin
-        private
-        def email_format
-            errors.add(:email, :invalid) unless email.match(EMAIL_REGEXP)
-            end
-    =end
+    #=begin
+        #private
+        #def email_format
+            #errors.add(:email, :invalid) unless email.match(EMAIL_REGEXP)
+            #end
+    #=end
 end
