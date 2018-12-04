@@ -1,7 +1,7 @@
 Colchonet::Application.routes.draw do
   LOCALES = /en|pt\-BR/
 
-  scope "(:locale)", locale: /en|pt|-BR/ do
+  scope "(:locale)", locale: LOCALES do
   resources :rooms
   resources :users
   end
