@@ -1,10 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 import logo from '../../assets/logo.png';
 
 import { Container, Form } from './styles';
 
 import CompareList from '../../components/CompareList';
+
+import GlobalStyle from '../../styles/global';
 
 export default class Main extends Component {
   state = {
@@ -263,17 +265,20 @@ export default class Main extends Component {
 
   render() {
     return (
-      <Container>
-        <img src={logo} alt="Github Compare" />
+      <Fragment>
+        <GlobalStyle />
+        <Container>
+          <img src={logo} alt="Github Compare" />
 
-        <Form>
-          <input type="text" placeholder="usuário/repositório" />
-          <button type="submit"> OK </button>
-          {' '}
-        </Form>
+          <Form>
+            <input type="text" placeholder="usuário/repositório" />
+            <button type="submit"> OK </button>
+            {' '}
+          </Form>
 
-        <CompareList repositories={this.state.repositories} />
-      </Container>
+          <CompareList repositories={this.state.repositories} />
+        </Container>
+      </Fragment>
     );
   }
 }
