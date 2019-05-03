@@ -6,7 +6,10 @@
 * {
   margin: 0;
   padding: 0;
-  background: linear-gradient(to right, #fc4a1a, #f7b733);
   font-family: "RobotoMono";
-  color: #fff;
+}
+
+body {
+  color: white;
+  background: linear-gradient(to right, #fc4a1a, #f7b733);
 }
