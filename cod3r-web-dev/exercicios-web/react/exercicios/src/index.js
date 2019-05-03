@@ -1,12 +1,15 @@
 import React, { Fragment, Component } from "react";
 import ReactDOM from "react-dom";
 
-import Multi, { BoaNoite } from "./componentes/Multiplos";
+import Pai from "./componentes/Pai";
+import Filho from "./componentes/Filho";
 
 ReactDOM.render(
   <div>
-    <Multi.BoaTarde nome="Ana" />
-    <BoaNoite nome="Bia" />
+    <Pai nome="Paulo" sobrenome="Silva">
+      <Filho nome="Pedro" />
+      <Filho nome="Pedro" />
+    </Pai>
   </div>,
   document.getElementById("root")
 );
