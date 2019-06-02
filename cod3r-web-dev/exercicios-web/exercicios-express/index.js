@@ -2,7 +2,16 @@ const express = require("express");
 
 const app = express();
 
-app.get("/opa", (req, res) => {
+const saudacao = require("./saudacaoMid");
+
+app.use(saudacao("Guilherme"));
+
+app.use((req, res, next) => {
+  console.log("Antes");
+  next();
+});
+
+app.get("/opa", (req, res, next) => {
   // res.send("<h1>Estou bem!</h1><br><br><h2>Tipo é HTML!</h2>");
   // res.json({
   //   name: "iPad 32Gb",
@@ -14,6 +23,7 @@ app.get("/opa", (req, res) => {
   //   { id: 34, name: "Bia", position: 2 },
   //   { id: 73, name: "Carlos", position: 3 }
   // ]);
+  console.log("Durante");
   res.json({
     data: [
       { id: 7, name: "Ana", posiiton: 1 },
@@ -25,6 +35,11 @@ app.get("/opa", (req, res) => {
     limit: 3,
     status: 200
   });
+  next();
+});
+
+app.use((req, res) => {
+  console.log("Depois");
 });
 
 app.listen(3000, () => {
