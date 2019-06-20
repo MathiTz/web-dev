@@ -2,5 +2,5 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 const elemento = document.getElementById("root");
-
-ReactDOM.render(<h1>Teste</h1>, elemento);
+const jsx = <h1>Teste</h1>;
+ReactDOM.render(jsx, elemento);
