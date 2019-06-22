@@ -41,8 +41,60 @@ class CalcController {
     this._operation.pop();
   }
 
-  addOperation(value) {
+  getLastOperation() {
+    return this._operation[this._operation.length - 1];
+  }
+
+  setLastOperation(value) {
+    this._operation[this._operation.length - 1] = value;
+  }
+
+  isOperator(value) {
+    //indexOf traz o index do item dentro do array
+    return ["+", "-", "*", "/", "%"].indexOf(value) > -1;
+  }
+
+  pushOperation(value) {
     this._operation.push(value);
+
+    if (this._operation.length > 3) {
+      this.calc();
+    }
+  }
+
+  calc() {
+    let last = this._operation.pop();
+
+    let result = eval(this._operation.join(""));
+
+    this._operation = [result, last];
+  }
+
+  setLastNumberToDisplay() {}
+
+  addOperation(value) {
+    if (isNaN(this.getLastOperation())) {
+      //String
+      if (this.isOperator(value)) {
+        //Trocar o operador
+        this.setLastOperation(value);
+      } else if (isNaN(value)) {
+        console.log(value);
+      } else {
+        this.pushOperation(value);
+      }
+    } else {
+      if (this.isOperator(value)) {
+        this.pushOperation(value);
+      } else {
+        let newValue = this.getLastOperation().toString() + value.toString();
+        this.setLastOperation(parseInt(newValue));
+
+        //atualizar display
+        this.setLastNumberToDisplay();
+      }
+    }
+
     console.log(this._operation);
   }
 
@@ -59,16 +111,24 @@ class CalcController {
         this.cancelEntry();
         break;
       case "soma":
+        this.addOperation("+");
         break;
       case "subtracao":
+        this.addOperation("-");
         break;
       case "divisao":
+        this.addOperation("/");
         break;
       case "multiplicacao":
+        this.addOperation("*");
         break;
       case "porcento":
+        this.addOperation("%");
         break;
       case "igual":
+        break;
+      case "ponto":
+        this.addOperation(".");
         break;
       case "0":
       case "1":
@@ -121,12 +181,12 @@ class CalcController {
     return (this._dateEl.innerHTML = value);
   }
 
-  get displayCalc() {
-    return this._displayCalcEl.innerHTML;
+  set displayCalc(value) {
+    this._displayCalcEl.innerHTML = value;
   }
 
-  set displayCalc(value) {
-    this._displayCalc = value;
+  get displayCalc() {
+    return this._displayCalcEl.innerHTML;
   }
 
   get currentDate() {
