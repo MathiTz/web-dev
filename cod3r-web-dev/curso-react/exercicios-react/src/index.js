@@ -9,12 +9,14 @@ import ReactDOM from "react-dom";
 // import ComponenteComFuncao from "./componentes/ComponenteComFuncao";
 // import Pai from "./componentes/Pai";
 // import ComponenteClasse from "./componentes/ComponenteClasse";
-import Contador from "./componentes/Contador";
+// import Contador from "./componentes/Contador";
+import Hook from "./componentes/Hook";
 
 const elemento = document.getElementById("root");
 ReactDOM.render(
   <div>
-    <Contador numeroInicial={100} />
+    <Hook />
+    {/* <Contador numeroInicial={100} /> */}
     {/* <ComponenteClasse /> */}
     {/* <Pai /> */}
     {/* <ComponenteComFuncao /> */}
