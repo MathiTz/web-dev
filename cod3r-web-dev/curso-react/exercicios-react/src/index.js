@@ -10,12 +10,20 @@ import ReactDOM from "react-dom";
 // import Pai from "./componentes/Pai";
 // import ComponenteClasse from "./componentes/ComponenteClasse";
 // import Contador from "./componentes/Contador";
-import Hook from "./componentes/Hook";
+import { combineReducers, createStore } from "redux";
+import { Provider } from "react-redux";
+// import Hook from "./componentes/Hook";
+
+import Field from "./field";
+
+const reducers = combineReducers({
+  field: () => ({ value: "Opa" })
+});
 
 const elemento = document.getElementById("root");
 ReactDOM.render(
-  <div>
-    <Hook />
+  <Provider store={createStore(reducers)}>
+    <Field initialValue="Teste" />
     {/* <Contador numeroInicial={100} /> */}
     {/* <ComponenteClasse /> */}
     {/* <Pai /> */}
@@ -29,7 +37,7 @@ ReactDOM.render(
     {/*<CompA valor="Olá eu sou A!" />
     <B valor="B na área" /> */}
     {/* <PrimeiroComponente valor="Bom dia!" /> */}
-  </div>,
+  </Provider>,
   elemento
 );
 
