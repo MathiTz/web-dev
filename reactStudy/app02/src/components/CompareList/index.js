@@ -3,37 +3,37 @@ import PropTypes from 'prop-types';
 
 import { Container, Repository } from './style';
 
-const CompareList = ({ repositories }) => (
+const CompareList = ({ users }) => (
   <Container>
-    {repositories.map(repository => (
-      <Repository key={repository.id}>
+    {users.map(user => (
+      <Repository key={user.id}>
         <header>
-          <img src={repository.owner.avatar_url} alt={repository.owner.login} />
-          <strong>{repository.name}</strong>
-          <small>{repository.owner.login}</small>
+          <img src={user.avatar_url} alt={user.login} />
+          <strong>{user.name}</strong>
+          <small>{user.login}</small>
         </header>
 
         <ul>
           <li>
-            {repository.stargazers_count}
+            {user.public_repos}
             {' '}
-            <small>starts</small>
+            <small>repos</small>
           </li>
-          <li>
-            {repository.forks_count}
+          {/* <li>
+            {user.forks_count}
             {' '}
             <small>forks</small>
           </li>
           <li>
-            {repository.open_issues_count}
+            {user.open_issues_count}
             {' '}
             <small>issues</small>
           </li>
           <li>
-            {repository.lastCommit}
+            {user.lastCommit}
             {' '}
             <small>last commit </small>
-          </li>
+          </li> */}
         </ul>
       </Repository>
     ))}
@@ -41,7 +41,7 @@ const CompareList = ({ repositories }) => (
 );
 
 CompareList.propTypes = {
-  repositories: PropTypes.arrayOf(
+  users: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,
       name: PropTypes.string,

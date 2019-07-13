@@ -15,28 +15,28 @@ import GlobalStyle from '../../styles/global';
 export default class Main extends Component {
   state = {
     loading: false,
-    repositoryError: false,
-    repositoryInput: '',
-    repositories: [],
+    userError: false,
+    userInput: '',
+    users: [],
   };
 
-  handleAddRepository = async (e) => {
+  handleAddUser = async (e) => {
     e.preventDefault();
 
     this.setState({ loading: true });
 
     try {
-      const { data: repository } = await api.get(`/repos/${this.state.repositoryInput}`);
+      const { data: user } = await api.get(`/users/${this.state.userInput}`);
 
-      repository.lastCommit = moment(repository.pushed_at).fromNow();
+      // repository.lastCommit = moment(repository.pushed_at).fromNow();
 
       this.setState({
-        repositoryInput: '',
-        repositories: [...this.state.repositories, repository],
-        repositoryError: false,
+        userInput: '',
+        users: [...this.state.users, user],
+        userError: false,
       });
     } catch (err) {
-      this.setState({ repositoryError: true });
+      this.setState({ userError: true });
     } finally {
       this.setState({ loading: false });
     }
@@ -46,14 +46,14 @@ export default class Main extends Component {
     return (
       <Container>
         <GlobalStyle />
-        <img src={logo} alt="Github Compare" />
+        <img src={logo} alt="Github Status" />
 
-        <Form withError={this.state.repositoryError} onSubmit={this.handleAddRepository}>
+        <Form withError={this.state.userError} onSubmit={this.handleAddUser}>
           <input
             type="text"
-            placeholder="usuário/repositório"
-            value={this.state.repositoryInput}
-            onChange={e => this.setState({ repositoryInput: e.target.value })}
+            placeholder="usuário"
+            value={this.state.userInput}
+            onChange={e => this.setState({ userInput: e.target.value })}
           />
           <button type="submit">
             {' '}
@@ -63,7 +63,7 @@ export default class Main extends Component {
           {' '}
         </Form>
 
-        <CompareList repositories={this.state.repositories} />
+        <CompareList users={this.state.users} />
       </Container>
     );
   }
