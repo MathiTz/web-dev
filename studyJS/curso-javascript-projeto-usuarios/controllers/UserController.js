@@ -5,6 +5,7 @@ class UserController {
     this.tableEl = document.getElementById(tableId);
     this.onSubmit();
     this.onEdit();
+    this.selectAll();
   }
 
   onEdit() {
@@ -31,23 +32,31 @@ class UserController {
 
       let result = Object.assign({}, userOld, values);
 
-      tr.dataset.user = JSON.stringify(result);
+      this.getPhoto(this.formUpdateEl).then(content => {
+        if (!values.photo) {
+          result._photo = userOld._photo;
+        } else {
+          result._photo = content;
+        }
 
-      tr.innerHTML = `
-        <td><img src="${
-          result._photo
-        }" alt="User Image" class="img-circle img-sm"></td>
-        <td>${result._name}</td>
-        <td>${result._email}</td>
-        <td>${result._admin ? "Sim" : "Não"}</td>
-        <td>${Utils.dateFormat(result._register)}</td>
-        <td>
-          <button type="button" class="btn btn-edit btn-primary btn-xs btn-flat">Editar</button>
-          <button type="button" class="btn btn-danger btn-xs btn-flat">Excluir</button>
-        </td>
-      `;
+        let user = new User();
 
-      this.addEventsTr(tr);
+        user.loadFromJSON(result);
+
+        user.save();
+
+        tr = this.getTr(user, tr);
+
+        this.updateCount();
+
+        this.formUpdateEl.reset();
+
+        btn.disabled = false;
+
+        this.showPanelCreate();
+
+        // this.addEventsTr(tr);
+      });
     });
   }
 
@@ -109,6 +118,8 @@ class UserController {
       this.getPhoto().then(
         content => {
           values.photo = content;
+
+          values.save();
 
           this.addLine(values);
 
@@ -187,8 +198,38 @@ class UserController {
     );
   }
 
+  getUsersStorage() {
+    let users = [];
+
+    if (localStorage.getItem("users")) {
+      users = JSON.parse(localStorage.getItem("users"));
+    }
+
+    return users;
+  }
+
+  selectAll() {
+    let users = this.getUsersStorage();
+
+    users.forEach(dataUser => {
+      let user = new User();
+
+      user.loadFromJSON(dataUser);
+
+      this.addLine(user);
+    });
+  }
+
   addLine(dataUser) {
-    let tr = document.createElement("tr");
+    let tr = this.getTr(dataUser);
+
+    this.tableEl.appendChild(tr);
+
+    this.updateCount();
+  }
+
+  getTr(dataUser, tr = null) {
+    if (tr === null) tr = document.createElement("tr");
 
     tr.dataset.user = JSON.stringify(dataUser);
 
@@ -207,6 +248,8 @@ class UserController {
   `;
 
     this.addEventsTr(tr);
+
+    return tr;
   }
 
   showPanelCreate() {
