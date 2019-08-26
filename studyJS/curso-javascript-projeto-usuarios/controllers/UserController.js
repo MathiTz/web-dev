@@ -39,6 +39,7 @@ class UserController {
           result._photo = content;
         }
 
+<<<<<<< HEAD
         tr.dataset.user = JSON.stringify(result);
 
         tr.innerHTML = `
@@ -56,6 +57,15 @@ class UserController {
         `;
 
         this.addEventsTr(tr);
+=======
+        let user = new User();
+
+        user.loadFromJSON(result);
+
+        user.save();
+
+        tr = this.getTr(user, tr);
+>>>>>>> 1ba7b2097037a56e4b5c01a33d668e7dd2682795
 
         this.updateCount();
 
@@ -64,13 +74,28 @@ class UserController {
         btn.disabled = false;
 
         this.showPanelCreate();
+<<<<<<< HEAD
+=======
+
+        // this.addEventsTr(tr);
+>>>>>>> 1ba7b2097037a56e4b5c01a33d668e7dd2682795
       });
     });
   }
 
   addEventsTr(tr) {
     tr.querySelector(".btn-delete").addEventListener("click", e => {
+<<<<<<< HEAD
       if (confirm("Deseja realmnete excluir?")) {
+=======
+      if (confirm("Deseja realmente excluir?")) {
+        let user = new User();
+
+        user.loadFromJSON(JSON.parse(tr.dataset.user));
+
+        user.remove();
+
+>>>>>>> 1ba7b2097037a56e4b5c01a33d668e7dd2682795
         tr.remove();
 
         this.updateCount();
@@ -135,7 +160,11 @@ class UserController {
         content => {
           values.photo = content;
 
+<<<<<<< HEAD
           this.insert(values);
+=======
+          values.save();
+>>>>>>> 1ba7b2097037a56e4b5c01a33d668e7dd2682795
 
           this.addLine(values);
 
@@ -214,6 +243,7 @@ class UserController {
     );
   }
 
+<<<<<<< HEAD
   getUsersStorage() {
     let users = [];
 
@@ -226,6 +256,10 @@ class UserController {
 
   selectAll() {
     let users = this.getUsersStorage();
+=======
+  selectAll() {
+    let users = User.getUsersStorage();
+>>>>>>> 1ba7b2097037a56e4b5c01a33d668e7dd2682795
 
     users.forEach(dataUser => {
       let user = new User();
@@ -236,6 +270,7 @@ class UserController {
     });
   }
 
+<<<<<<< HEAD
   insert(data) {
     let users = this.getUsersStorage();
 
@@ -244,8 +279,18 @@ class UserController {
     sessionStorage.setItem("users", JSON.stringify(users));
   }
 
+=======
+>>>>>>> 1ba7b2097037a56e4b5c01a33d668e7dd2682795
   addLine(dataUser) {
-    let tr = document.createElement("tr");
+    let tr = this.getTr(dataUser);
+
+    this.tableEl.appendChild(tr);
+
+    this.updateCount();
+  }
+
+  getTr(dataUser, tr = null) {
+    if (tr === null) tr = document.createElement("tr");
 
     tr.dataset.user = JSON.stringify(dataUser);
 
@@ -264,6 +309,8 @@ class UserController {
   `;
 
     this.addEventsTr(tr);
+
+    return tr;
   }
 
   showPanelCreate() {
