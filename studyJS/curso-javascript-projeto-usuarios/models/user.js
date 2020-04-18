@@ -60,20 +60,11 @@ class User {
     for (let name in json) {
       switch (name) {
         case "_register":
-<<<<<<< HEAD
           this[name] = new Date(json[name]);
           break;
         default:
           this[name] = json[name];
           break;
-      }
-    }
-  }
-=======
-          this[name] = new Data(json[name]);
-          break;
-        default:
-          this[name] = json[name];
       }
     }
   }
@@ -104,8 +95,9 @@ class User {
     let users = User.getUsersStorage();
 
     if (this.id > 0) {
-      users.map(u => {
+      users.map((u) => {
         if (u._id == this.id) {
+          //assign mescla objetos
           Object.assign(u, this);
         }
 
@@ -116,6 +108,7 @@ class User {
 
       users.push(this);
     }
+
     localStorage.setItem("users", JSON.stringify(users));
   }
 
@@ -130,5 +123,4 @@ class User {
 
     localStorage.setItem("users", JSON.stringify(users));
   }
->>>>>>> 1ba7b2097037a56e4b5c01a33d668e7dd2682795
 }
