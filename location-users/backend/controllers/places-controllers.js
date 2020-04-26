@@ -1,3 +1,5 @@
+const fs = require("fs");
+
 const mongoose = require("mongoose");
 const { validationResult } = require("express-validator");
 
@@ -65,7 +67,6 @@ const createPlace = async (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    console.log(errors);
     return next(
       new HttpError("Invalid inputs passed, please check your data", 422)
     );
@@ -85,8 +86,7 @@ const createPlace = async (req, res, next) => {
     description,
     address,
     location: coordinates,
-    image:
-      "https://dicasnovayork.com.br/wp-content/uploads/2016/02/empire_header1-1000x700.jpgs",
+    image: req.file.path,
     creator,
   });
 
@@ -122,7 +122,6 @@ const updatePlace = async (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    console.log(errors);
     return next(
       new HttpError("Invalid inputs passed, please check your data", 422)
     );
@@ -140,6 +139,11 @@ const updatePlace = async (req, res, next) => {
       500
     );
 
+    return next(error);
+  }
+
+  if (place.creator.toString() !== req.userData.userId) {
+    const error = new HttpError("You are not allowed to edit this place.", 401);
     return next(error);
   }
 
@@ -179,6 +183,16 @@ const deletePlace = async (req, res, next) => {
     return next(error);
   }
 
+  if (place.creator.id.toString() !== req.userData.userId) {
+    const error = new HttpError(
+      "You are not allowed to delete this place.",
+      401
+    );
+    return next(error);
+  }
+
+  const imagePath = place.image;
+
   try {
     const sess = await mongoose.startSession();
     sess.startTransaction();
@@ -193,6 +207,10 @@ const deletePlace = async (req, res, next) => {
     );
     return next(error);
   }
+
+  fs.unlink(imagePath, (err) => {
+    console.log(err + "erro no upload de imagens");
+  });
 
   res.status(200).json({ message: "Deleted place" });
 };

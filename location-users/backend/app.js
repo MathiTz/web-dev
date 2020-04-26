@@ -1,3 +1,6 @@
+const fs = require("fs");
+const path = require("path");
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -10,7 +13,15 @@ const app = express();
 
 app.use(bodyParser.json());
 
+app.use("/uploads/images", express.static(path.join("uploads", "images")));
+
 app.use((req, res, next) => {
+  if (req.file) {
+    fs.unlink(req.file.path, (err) => {
+      console.log(err + "erro no upload de image");
+    });
+  }
+
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Headers",
@@ -47,5 +58,5 @@ mongoose
     app.listen(5000);
   })
   .catch((err) => {
-    console.log(err);
+    console.log(err + "sem conexão com o db");
   });
