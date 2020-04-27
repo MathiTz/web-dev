@@ -5,6 +5,8 @@ const jwt = require("jsonwebtoken");
 const HttpError = require("../models/http-error");
 const User = require("../models/user");
 
+require("dotenv/config");
+
 const getUsers = async (req, res, next) => {
   let users;
   try {
@@ -76,7 +78,7 @@ const signup = async (req, res, next) => {
   try {
     token = jwt.sign(
       { userId: createdUser.id, email: createdUser.email },
-      "supersecretdontshared",
+      process.env.JWT_SECRET,
       {
         expiresIn: "1h",
       }
@@ -138,7 +140,7 @@ const login = async (req, res, next) => {
   try {
     token = jwt.sign(
       { userId: existingUser.id, email: existingUser.email },
-      "supersecretdontshared",
+      process.env.JWT_SECRET,
       {
         expiresIn: "1h",
       }

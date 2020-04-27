@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+require("dotenv/config");
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -51,12 +52,13 @@ app.use((error, req, res, next) => {
 
 mongoose
   .connect(
-    "mongodb+srv://mathitz:Mathitz161295@cluster0-bpa52.mongodb.net/mern?retryWrites=true&w=majority",
+    `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0-bpa52.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => {
-    app.listen(5000);
+    console.log("Conexão feita com sucesso!");
+    app.listen(process.env.PORT || 5000);
   })
   .catch((err) => {
-    console.log(err + "sem conexão com o db");
+    console.log(err + " sem conexão com o db");
   });
